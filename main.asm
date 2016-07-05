@@ -1,4 +1,5 @@
 SECTION .data
+	fmt db "%s", 0
 	hello db "hello world", 10, 0
 	helloLen equ $-hello
 	syscall_write db 1
@@ -8,7 +9,7 @@ SECTION .bss
 
 SECTION .text
 	GLOBAL asm_main
-	EXTERN write_message, to_upper
+	EXTERN write_message, to_upper, printf_wrap
 
 asm_main:
 	; subroutines should preserve values of rbx, rsi, rdi, rbp, cs, ds, ss, es etc.
@@ -23,6 +24,13 @@ asm_main:
 	call write_message
 	add rsp, 16 		; remove 2 parameters from stack	
 	
+	push fmt 
+	push hello	
+
+	call printf_wrap 
+
+	add rsp, 16		; remove 2 parameters from stack
+
 	leave
 	mov rax, 0 		; return 0 = success
 	ret

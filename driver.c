@@ -3,7 +3,8 @@
 int main(int argc, char *argv[])
 {
 	int ret;
+	printf("[driver start]\n");
 	ret = asm_main();
-	printf("[exiting c]\n");
+	printf("[driver end]\n");
 	return ret;
 }
