@@ -1,6 +1,5 @@
 SECTION .data
-
-	hello db "Hello World", 10
+	hello db "hello world", 10, 0
 	helloLen equ $-hello
 	syscall_write db 1
 
@@ -9,18 +8,21 @@ SECTION .bss
 
 SECTION .text
 	GLOBAL asm_main
-	EXTERN write_message
+	EXTERN write_message, to_upper
 
 asm_main:
 	; subroutines should preserve values of rbx, rsi, rdi, rbp, cs, ds, ss, es etc.
 	enter 0,0
 
-	push helloLen
-	push hello 		; push hello to stack
+	push hello		; push string address on stack
+
+	call to_upper
+
+	push helloLen		; push length on stack - address still there
 
 	call write_message
 	add rsp, 16 		; remove 2 parameters from stack	
 	
 	leave
-	mov rdx, 0 		; return 0 = success
+	mov rax, 0 		; return 0 = success
 	ret
