@@ -1,15 +1,15 @@
-SECTION .data
+section .data
 	fmt db "%s", 0
 	hello db "hello world", 10, 0
 	helloLen equ $-hello
 	syscall_write db 1
 
-SECTION .bss
-	input1 resd 1
+section .bss
+	fact resq 8
 
-SECTION .text
-	GLOBAL asm_main
-	EXTERN write_message, to_upper, printf_wrap
+section .text
+	global asm_main
+	extern write_message, to_upper, printf_wrap
 
 asm_main:
 	; subroutines should preserve values of rbx, rsi, rdi, rbp, cs, ds, ss, es etc.

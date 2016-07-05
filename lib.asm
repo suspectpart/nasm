@@ -4,8 +4,8 @@ section .data
 	sys_write db 1
 
 section .text
-	GLOBAL write_message, to_upper 	; make global to reference it from outside
-	GLOBAL printf_wrap
+	global write_message, to_upper 	; make global to reference it from outside
+	global printf_wrap
 
 write_message:
 	enter 8,0 			; push rbp && rbp=rsp && sub rsp, 8
