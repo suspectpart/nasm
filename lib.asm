@@ -6,6 +6,7 @@ section .data
 section .text
 	global write_message, to_upper 	; make global to reference it from outside
 	global printf_wrap
+	global duplicate
 
 write_message:
 	enter 8,0 			; push rbp && rbp=rsp && sub rsp, 8
@@ -56,5 +57,19 @@ printf_wrap:
 	mov rax, 0			; rax=0 tells function that there are no floating point arguments	
 	call printf	
 
+	leave
+	ret
+
+duplicate:
+	enter 16,0
+
+	mov rdi, [rbp+16]		; index of destination string	
+	mov rsi, [rbp+24]		; index of source string
+	mov rcx, [rbp+32]		; length of strings to copy
+copy_char:
+	lodsq				; load quadword at rsi into rax and increment rsi by 8
+	stosq				; store quadword in rax into rdi and increment rdi by 8
+	loop copy_char 			; decrement rcx and loop if > 0
+	
 	leave
 	ret
